@@ -1,13 +1,12 @@
 pipeline {
 	agent any
 	
-	environment {
-		/*
+	/* 
+		environment {
 		REPO_URL   = 'git@github.com:dpriches/simple-java-maven-app.git'
 		REPO_CREDS = credentials ('jenkins')
-		*/
 	}
-	
+*/	
 	stages {	
 		stage('Info') {
             steps {
