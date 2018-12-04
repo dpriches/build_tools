@@ -3,7 +3,7 @@ pipeline {
 	
 	environment {
 		REPO_URL   = 'git@github.com:dpriches/simple-java-maven-app.git'
-		REPO_CREDS = credentials ('jenkins-standalone')
+		REPO_CREDS = credentials ('jenkins')
 	}
 	
 	stages {	
