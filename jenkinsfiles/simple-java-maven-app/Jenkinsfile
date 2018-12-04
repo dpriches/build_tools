@@ -24,9 +24,9 @@ pipeline {
 					$class: 'GitSCM', 
 					branches: [[name: 'refs/heads/master']], 
 					doGenerateSubmoduleConfigurations: false, 
-					extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'tools']], 
+					extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'app']], 
 					submoduleCfg: [], 
-					userRemoteConfigs: [[ credentialsId: $REPO_CREDS, url: $REPO_URL ]]
+					userRemoteConfigs: [[ credentialsId: ${REPO_CREDS}, url: ${REPO_URL} ]]
 				])
 			}
 		}
