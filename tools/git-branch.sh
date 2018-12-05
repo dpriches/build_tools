@@ -99,7 +99,7 @@ fi
 # branch>.0.                                                                    #    
 # If BRANCHNAME is set, check it's not already present                          #
 #-------------------------------------------------------------------------------#
-_DEBUG='off'
+_DEBUG='on'
 DEBUG echo "SRCDIR: $SRCDIR"
 
 echo -e "\nSwitching to $SRCBRANCH..."
@@ -115,7 +115,7 @@ if [ -z "$BRANCHNAME" ]
 then
 
 # Get current branch, sort numerically to get most recent version
-    CURPOMVERSION=$(cat ${SRCDIR}/pom.xml | xpath "/project/version/text()" 2>/dev/null | cut -f1,2 -d. | sed "s/-SNAPSHOT//")
+    CURPOMVERSION=$(cat ${SRCDIR}/pom.xml | xpath -e "/project/version/text()" 2>/dev/null | cut -f1,2 -d. | sed "s/-SNAPSHOT//")
     CURBLDNUM=$(git -C ${SRCDIR} branch -r | egrep "origin/${VERSIONFORMAT}$" | grep "origin/$CURPOMVERSION" | sort --version-sort | tail -1)
     DEBUG echo "CURPOMVERSION: $CURPOMVERSION"
     DEBUG echo "CURBLDNUM: $CURBLDNUM"
