@@ -1,14 +1,19 @@
 pipeline {
 	agent any
 	
-	environment {
-		REPO_URL   = 'git@github.com:dpriches/simple-java-maven-app.git'
-		REPO_CREDS = credentials ('jenkins-standalone')
+/*
+ 	environment {
+		REPO_URL   = 'git@github.com:dpriches/build_tools.git'
+		REPO_CREDS = credentials ('jenkins')
 	}
+*/
 	
 	stages {	
-		stage('Info') {
+
+// Do some prep work for the build
+		stage('Prep') {
             steps {
+				// Get the list of target environments to deploy to.
                 script {
 					String[] targetEnv = params.TARGET_ENV.tokenize (",")
 					echo "# envs - ${targetEnv.size()}"
@@ -18,7 +23,9 @@ pipeline {
 				}
 			}
 		}
-		stage('GetTools') {
+
+// Get the tools repo for the install script/config.xml
+/*		stage('GetTools') {
 			steps {
 				checkout([  
 					$class: 'GitSCM', 
@@ -30,19 +37,16 @@ pipeline {
 				])
 			}
 		}
-/*
- 		stage('Cleanup') {
-			steps {
-				step ([$class: 'WsCleanup'])
-			}
-		}
-		
+		*/
+
+// Build the app without running tests. Separates compilation errors from test errors		
 		stage('Build') {
             steps {
                 sh 'mvn -B -DskipTests clean package'
             }
         }
 
+// Do some unit testing
         stage('Test') {
             steps {
                 sh 'mvn test'
@@ -54,17 +58,25 @@ pipeline {
             }
         }
 
+// If pass, upload artifact to repo server
         stage('UploadArtifact') {
             steps {
                 sh 'mvn deploy'
             }
         }
 
+// Create rpms
         stage('GenerateRpms') {
             steps {
                 sh 'mvn deploy -P create-rpms -f create-rpms/pom.xml'
             }
         }
-*/
+
+// Do cleanup
+ 		stage('Cleanup') {
+			steps {
+				step ([$class: 'WsCleanup'])
+			}
+		}
 	}
 }
